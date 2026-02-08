@@ -13,15 +13,22 @@ HD2DSprite::HD2DSprite()
     pixel_perfect = false;
     pixel_size = 0.01;
     billboard_enabled = true;
+    modulate = Color(1.0, 1.0, 1.0, 1.0); // White (no tint)
+    alpha_scissor_threshold = 0.5;
 
     // Create mesh and material
     mesh = Ref<ArrayMesh>(memnew(ArrayMesh));
     material = Ref<StandardMaterial3D>(memnew(StandardMaterial3D));
 
     // Configure material for sprite rendering
-    material->set_transparency(BaseMaterial3D::TRANSPARENCY_ALPHA);
+    // Configure material for HD-2D style rendering
+    // ALPHA_SCISSOR prevents "blurry" sorting issues common in 2.5D
+    material->set_transparency(BaseMaterial3D::TRANSPARENCY_ALPHA_SCISSOR);
+    material->set_alpha_scissor_threshold(alpha_scissor_threshold);
+    material->set_albedo(modulate);
     material->set_shading_mode(BaseMaterial3D::SHADING_MODE_UNSHADED);
-    material->set_cull_mode(BaseMaterial3D::CULL_DISABLED); // Double-sided
+    material->set_cull_mode(BaseMaterial3D::CULL_DISABLED);
+    material->set_texture_filter(BaseMaterial3D::TEXTURE_FILTER_NEAREST);
     material->set_billboard_mode(BaseMaterial3D::BILLBOARD_ENABLED);
 }
 
@@ -55,6 +62,16 @@ void HD2DSprite::_bind_methods()
     ClassDB::bind_method(D_METHOD("set_billboard_enabled", "enabled"), &HD2DSprite::set_billboard_enabled);
     ClassDB::bind_method(D_METHOD("get_billboard_enabled"), &HD2DSprite::get_billboard_enabled);
     ADD_PROPERTY(PropertyInfo(Variant::BOOL, "billboard_enabled"), "set_billboard_enabled", "get_billboard_enabled");
+
+    // Visual properties
+    ADD_GROUP("Visual", "");
+    ClassDB::bind_method(D_METHOD("set_modulate", "color"), &HD2DSprite::set_modulate);
+    ClassDB::bind_method(D_METHOD("get_modulate"), &HD2DSprite::get_modulate);
+    ADD_PROPERTY(PropertyInfo(Variant::COLOR, "modulate"), "set_modulate", "get_modulate");
+
+    ClassDB::bind_method(D_METHOD("set_alpha_scissor_threshold", "threshold"), &HD2DSprite::set_alpha_scissor_threshold);
+    ClassDB::bind_method(D_METHOD("get_alpha_scissor_threshold"), &HD2DSprite::get_alpha_scissor_threshold);
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "alpha_scissor_threshold", PROPERTY_HINT_RANGE, "0,1,0.01"), "set_alpha_scissor_threshold", "get_alpha_scissor_threshold");
 }
 
 void HD2DSprite::_update_mesh()
@@ -69,11 +86,12 @@ void HD2DSprite::_update_mesh()
     float half_width = sprite_size.x * 0.5;
     float half_height = sprite_size.y * 0.5;
 
-    // Define quad vertices (centered at origin)
-    vertices.push_back(Vector3(-half_width, -half_height, 0));
-    vertices.push_back(Vector3(half_width, -half_height, 0));
-    vertices.push_back(Vector3(half_width, half_height, 0));
-    vertices.push_back(Vector3(-half_width, half_height, 0));
+    // Define quad vertices (Bottom-Center Pivot)
+    // Y starts at 0 and goes UP to full height
+    vertices.push_back(Vector3(-half_width, 0.0, 0));           // Bottom-Left
+    vertices.push_back(Vector3(half_width, 0.0, 0));            // Bottom-Right
+    vertices.push_back(Vector3(half_width, sprite_size.y, 0));  // Top-Right
+    vertices.push_back(Vector3(-half_width, sprite_size.y, 0)); // Top-Left
 
     // UV coordinates
     uvs.push_back(Vector2(0, 1)); // Bottom-left
@@ -184,6 +202,34 @@ void HD2DSprite::_ready()
 {
     _update_mesh();
     _update_material();
+}
+
+void HD2DSprite::set_modulate(const Color &p_color)
+{
+    modulate = p_color;
+    if (material.is_valid())
+    {
+        material->set_albedo(modulate);
+    }
+}
+
+Color HD2DSprite::get_modulate() const
+{
+    return modulate;
+}
+
+void HD2DSprite::set_alpha_scissor_threshold(float p_threshold)
+{
+    alpha_scissor_threshold = p_threshold;
+    if (material.is_valid())
+    {
+        material->set_alpha_scissor_threshold(alpha_scissor_threshold);
+    }
+}
+
+float HD2DSprite::get_alpha_scissor_threshold() const
+{
+    return alpha_scissor_threshold;
 }
 
 void HD2DSprite::_process(double delta)

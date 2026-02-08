@@ -20,7 +20,9 @@ private:
     bool pixel_perfect;
     float pixel_size;
     bool billboard_enabled;
-    
+    Color modulate;
+    float alpha_scissor_threshold;
+
     // Mesh and material
     Ref<ArrayMesh> mesh;
     Ref<StandardMaterial3D> material;
@@ -54,6 +56,14 @@ public:
     // Billboard mode
     void set_billboard_enabled(bool p_enabled);
     bool get_billboard_enabled() const;
+
+    // Color Modulation
+    void set_modulate(const Color &p_color);
+    Color get_modulate() const;
+
+    // Alpha Scissor
+    void set_alpha_scissor_threshold(float p_threshold);
+    float get_alpha_scissor_threshold() const;
 
     // Godot lifecycle
     void _ready();
