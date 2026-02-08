@@ -1,0 +1,13 @@
+[configuration]
+
+entry_symbol = "hd2d_library_init"
+compatibility_minimum = "4.3"
+
+[libraries]
+
+macos.debug = "res://bin/libhd2d.macos.debug.framework"
+macos.release = "res://bin/libhd2d.macos.release.framework"
+windows.debug.x86_64 = "res://bin/libhd2d.windows.debug.x86_64.dll"
+windows.release.x86_64 = "res://bin/libhd2d.windows.release.x86_64.dll"
+linux.debug.x86_64 = "res://bin/libhd2d.linux.debug.x86_64.so"
+linux.release.x86_64 = "res://bin/libhd2d.linux.release.x86_64.so"

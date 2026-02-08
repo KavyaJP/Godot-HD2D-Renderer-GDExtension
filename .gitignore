@@ -1,0 +1,59 @@
+# Godot-specific ignores
+.import/
+export.cfg
+export_presets.cfg
+.mono/
+data_*/
+mono_crash.*.json
+
+# Godot 4+ specific
+.godot/
+*.translation
+
+# Compiled binaries
+*.dll
+*.so
+*.dylib
+*.framework
+*.a
+*.lib
+*.obj
+*.o
+*.exp
+*.pdb
+*.ilk
+
+# Build directories
+bin/
+build/
+*.dblite
+
+# SCons specific
+.sconsign.dblite
+.scons_env.json
+*.pyc
+__pycache__/
+
+# Compilation artifacts
+*.os
+*.gen.*
+*.obj
+*.exe
+*.out
+*.app
+
+# godot-cpp compilation cache
+godot-cpp/bin/
+godot-cpp/gen/
+godot-cpp/.sconsign.dblite
+
+# IDE and editor folders
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Visual Studio
+.vs
