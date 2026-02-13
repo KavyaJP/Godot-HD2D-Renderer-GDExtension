@@ -5,17 +5,18 @@
 [node name="TestPlayer" type="Node3D" unique_id=234412674]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=9669028]
-transform = Transform3D(0.5092819, -0.74530137, 0.43029982, 2.9817915e-08, 0.49999994, 0.8660255, -0.8605998, -0.44105107, 0.25464094, 4.0428677, 2.4775338, 1.7592797)
+transform = Transform3D(0.9267845, 0.3252736, -0.18779679, 2.9817915e-08, 0.49999994, 0.8660255, 0.37559366, -0.8026191, 0.46339226, 4.0428677, 20.152617, 38.505547)
 shadow_enabled = true
 
 [node name="Player" parent="." unique_id=1572117037 instance=ExtResource("1_eru6m")]
-
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1794480544]
-transform = Transform3D(1, 0, 0, 0, 0.9343476, 0.356363, 0, -0.356363, 0.9343476, 0, 0.9921255, 1.8815213)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47324443, 0)
 
 [node name="Ground" type="Node3D" parent="." unique_id=232567160]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Ground" unique_id=1689153549]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.018029988, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 use_collision = true
-size = Vector3(5.345703, 0.03564453, 4.806885)
+size = Vector3(60, 4, 80)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1794480544]
+transform = Transform3D(1, 0, 0, 0, 0.785425, 0.6189569, 0, -0.6189569, 0.785425, 0, 5.1242046, 17.060741)

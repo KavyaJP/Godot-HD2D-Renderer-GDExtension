@@ -5,23 +5,25 @@
 [ext_resource type="Script" uid="uid://buat1h0jn2uej" path="res://scripts/state_machine/node_state_machine.gd" id="3_gmlin"]
 [ext_resource type="Script" uid="uid://be11iuqxngxrm" path="res://scenes/player/idle_state.gd" id="4_lvxji"]
 [ext_resource type="Script" uid="uid://bes0uvrxpn653" path="res://scenes/player/walk_state.gd" id="5_p47bc"]
+[ext_resource type="Script" uid="uid://dlfd6qeu3yfjc" path="res://scenes/player/jump_state.gd" id="6_75vfm"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8afob"]
-height = 0.15039063
-radius = 0.030273438
+height = 1.2731934
+radius = 0.2553711
 
 [node name="Player" type="CharacterBody3D" unique_id=1572117037]
 script = ExtResource("1_dovo2")
 
 [node name="Sprite" type="Hybrid2D3DAnimatedSprite" parent="." unique_id=1931319317]
-sprite_height = 20.0
+sprite_height_px = 20.0
 offset = Vector2(0, 10)
+pixel_size = 0.085
 sprite_frames = ExtResource("1_8afob")
-animation = &"idle_s"
+animation = &"jump_se"
 autoplay = "idle_s"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=990126817]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07507324, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6364746, 0)
 shape = SubResource("CylinderShape3D_8afob")
 
 [node name="StateMachine" type="Node" parent="." unique_id=91837971 node_paths=PackedStringArray("initial_node_state")]
@@ -38,4 +40,7 @@ script = ExtResource("5_p47bc")
 player = NodePath("../..")
 sprite = NodePath("../../Sprite")
 
-[node name="Jump" type="Node" parent="StateMachine" unique_id=1764367528]
+[node name="Jump" type="Node" parent="StateMachine" unique_id=1764367528 node_paths=PackedStringArray("player", "sprite")]
+script = ExtResource("6_75vfm")
+player = NodePath("../..")
+sprite = NodePath("../../Sprite")
