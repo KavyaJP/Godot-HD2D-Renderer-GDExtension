@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://be11iuqxngxrm" path="res://scenes/player/idle_state.gd" id="4_lvxji"]
 [ext_resource type="Script" uid="uid://bes0uvrxpn653" path="res://scenes/player/walk_state.gd" id="5_p47bc"]
 [ext_resource type="Script" uid="uid://dlfd6qeu3yfjc" path="res://scenes/player/jump_state.gd" id="6_75vfm"]
+[ext_resource type="Script" uid="uid://d2577d5cbdjrx" path="res://scenes/player/fall_state.gd" id="7_0owmy"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8afob"]
 height = 1.2731934
@@ -42,5 +43,10 @@ sprite = NodePath("../../Sprite")
 
 [node name="Jump" type="Node" parent="StateMachine" unique_id=1764367528 node_paths=PackedStringArray("player", "sprite")]
 script = ExtResource("6_75vfm")
+player = NodePath("../..")
+sprite = NodePath("../../Sprite")
+
+[node name="Fall" type="Node" parent="StateMachine" unique_id=624286025 node_paths=PackedStringArray("player", "sprite")]
+script = ExtResource("7_0owmy")
 player = NodePath("../..")
 sprite = NodePath("../../Sprite")

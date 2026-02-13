@@ -57,7 +57,11 @@ func _on_next_transitions() -> void:
 	if GameInputEvent.is_jump_just_pressed():
 		transition.emit("jump")
 		return
-
+	
+	if not player.is_on_floor():
+		transition.emit("fall")
+		return
+	
 	if GameInputEvent.is_movement_input():
 		transition.emit("walk")
 
