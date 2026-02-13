@@ -12,9 +12,6 @@ namespace godot
 
     private:
         float sprite_height;
-        String base_animation; // Root name of the animation
-        String last_direction_suffix; // Store the last known direction
-        String _get_direction_suffix(double signed_angle, bool &out_flip); // Internal helper to get the angle between camera and player
 
     protected:
         static void _bind_methods();
@@ -22,15 +19,9 @@ namespace godot
     public:
         Hybrid2D3DAnimatedSprite();
         ~Hybrid2D3DAnimatedSprite();
-
-        void _process(double delta) override;
-
-        // New Helper Property
+        
         void set_sprite_height(float p_height);
         float get_sprite_height() const;
-
-        void set_base_animation(const String &p_name);
-        String get_base_animation() const;
     };
 
 } // namespace godot
