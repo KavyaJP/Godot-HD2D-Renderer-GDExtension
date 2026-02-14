@@ -1,0 +1,61 @@
+name: Build GDExtension
+
+on:
+  push:
+    # ONLY trigger on tags starting with 'v' (e.g. v1.0, v0.2.5)
+    tags:
+      - 'v*'
+  # Keep this so you can click "Run Workflow" manually if you ever need to test without tagging
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: windows
+            os: windows-latest
+            arch: x86_64
+          - platform: linux
+            os: ubuntu-latest
+            arch: x86_64
+          - platform: macos
+            os: macos-latest
+            arch: universal
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install SCons
+        run: pip install scons
+
+      - name: Build Debug Target
+        run: |
+          scons platform=${{ matrix.platform }} target=template_debug arch=${{ matrix.arch }}
+
+      - name: Build Release Target
+        run: |
+          scons platform=${{ matrix.platform }} target=template_release arch=${{ matrix.arch }}
+
+      - name: Clean up MacOS Framework (MacOS Only)
+        if: matrix.platform == 'macos'
+        run: |
+          echo "MacOS build complete."
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform }}-build
+          path: |
+            hybrid-2d-3d-demo/addons/hybrid2d3d/bin/
